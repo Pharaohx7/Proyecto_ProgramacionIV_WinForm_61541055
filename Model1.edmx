@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DB_AgenciaDigitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_Gestiones">
+          <Key>
+            <PropertyRef Name="Codigo_Gestion" />
+          </Key>
+          <Property Name="Codigo_Gestion" Type="int" Nullable="false" />
+          <Property Name="Codigo_Usuario" Type="int" />
+          <Property Name="Codigo_Producto" Type="int" />
+          <Property Name="Tipo_Gestion" Type="nvarchar(max)" />
+          <Property Name="Descripcion" Type="nvarchar(max)" />
+          <Property Name="Fecha_Gestion" Type="date" />
+          <Property Name="Estado" Type="nvarchar(max)" />
+          <Property Name="Tipo_Producto" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Producto">
+          <Key>
+            <PropertyRef Name="Codigo_Producto" />
+          </Key>
+          <Property Name="Codigo_Producto" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar(max)" />
+          <Property Name="Tipo_Producto" Type="nvarchar(max)" />
+          <Property Name="Codigo_Usuario" Type="int" />
+          <Property Name="Monto_Inicial" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Depositos" Type="int" />
+          <Property Name="Retiros" Type="int" />
+          <Property Name="Cuota" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Pago" Type="datetime" />
+          <Property Name="Monto_Capital" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Monto_Interes" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Saldo_Final" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Plazos" Type="int" />
+        </EntityType>
+        <EntityType Name="TB_Transacciones">
+          <Key>
+            <PropertyRef Name="Codigo_Transaccion" />
+          </Key>
+          <Property Name="Codigo_Transaccion" Type="int" Nullable="false" />
+          <Property Name="Codigo_Producto" Type="int" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Transaccion" Type="datetime" />
+          <Property Name="Tipo_Transaccion" Type="nvarchar(max)" />
+          <Property Name="Codigo_Usuario" Type="int" />
+          <Property Name="Numero_Identidad" Type="nvarchar(max)" />
+          <Property Name="Nombre_Completo" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TB_Usuario">
+          <Key>
+            <PropertyRef Name="Codigo_Usuario" />
+          </Key>
+          <Property Name="Codigo_Usuario" Type="int" Nullable="false" />
+          <Property Name="Contraseña" Type="nvarchar(max)" />
+          <Property Name="Numero_Identidad" Type="nvarchar(max)" />
+          <Property Name="Nombre_Completo" Type="nvarchar(max)" />
+          <Property Name="Genero" Type="nvarchar(max)" />
+          <Property Name="Correo_Electronico" Type="nvarchar(max)" />
+          <Property Name="Telefono" Type="nvarchar(max)" />
+          <Property Name="Rol" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_TB_Gestiones_TB_Producto">
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="0..1" />
+          <End Role="TB_Gestiones" Type="Self.TB_Gestiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="Codigo_Producto" />
+            </Principal>
+            <Dependent Role="TB_Gestiones">
+              <PropertyRef Name="Codigo_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Gestiones_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Gestiones" Type="Self.TB_Gestiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Gestiones">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Producto_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Producto">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Transacciones_TB_Producto">
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="0..1" />
+          <End Role="TB_Transacciones" Type="Self.TB_Transacciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="Codigo_Producto" />
+            </Principal>
+            <Dependent Role="TB_Transacciones">
+              <PropertyRef Name="Codigo_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Transacciones_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Transacciones" Type="Self.TB_Transacciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Transacciones">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_AgenciaDigitalModelStoreContainer">
+          <EntitySet Name="TB_Gestiones" EntityType="Self.TB_Gestiones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Producto" EntityType="Self.TB_Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Transacciones" EntityType="Self.TB_Transacciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_Usuario" EntityType="Self.TB_Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TB_Gestiones_TB_Producto" Association="Self.FK_TB_Gestiones_TB_Producto">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_Gestiones" EntitySet="TB_Gestiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Gestiones_TB_Usuario" Association="Self.FK_TB_Gestiones_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Gestiones" EntitySet="TB_Gestiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Producto_TB_Usuario" Association="Self.FK_TB_Producto_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Transacciones_TB_Producto" Association="Self.FK_TB_Transacciones_TB_Producto">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_Transacciones" EntitySet="TB_Transacciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Transacciones_TB_Usuario" Association="Self.FK_TB_Transacciones_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Transacciones" EntitySet="TB_Transacciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_AgenciaDigitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TB_Gestiones">
+          <Key>
+            <PropertyRef Name="Codigo_Gestion" />
+          </Key>
+          <Property Name="Codigo_Gestion" Type="Int32" Nullable="false" />
+          <Property Name="Codigo_Usuario" Type="Int32" />
+          <Property Name="Codigo_Producto" Type="Int32" />
+          <Property Name="Tipo_Gestion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha_Gestion" Type="DateTime" Precision="0" />
+          <Property Name="Estado" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TB_Producto" Relationship="Self.FK_TB_Gestiones_TB_Producto" FromRole="TB_Gestiones" ToRole="TB_Producto" />
+          <NavigationProperty Name="TB_Usuario" Relationship="Self.FK_TB_Gestiones_TB_Usuario" FromRole="TB_Gestiones" ToRole="TB_Usuario" />
+          <Property Name="Tipo_Producto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TB_Producto">
+          <Key>
+            <PropertyRef Name="Codigo_Producto" />
+          </Key>
+          <Property Name="Codigo_Producto" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Tipo_Producto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo_Usuario" Type="Int32" />
+          <Property Name="Monto_Inicial" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Depositos" Type="Int32" />
+          <Property Name="Retiros" Type="Int32" />
+          <Property Name="Cuota" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Pago" Type="DateTime" Precision="3" />
+          <Property Name="Monto_Capital" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Monto_Interes" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Saldo_Final" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Plazos" Type="Int32" />
+          <NavigationProperty Name="TB_Gestiones" Relationship="Self.FK_TB_Gestiones_TB_Producto" FromRole="TB_Producto" ToRole="TB_Gestiones" />
+          <NavigationProperty Name="TB_Usuario" Relationship="Self.FK_TB_Producto_TB_Usuario" FromRole="TB_Producto" ToRole="TB_Usuario" />
+          <NavigationProperty Name="TB_Transacciones" Relationship="Self.FK_TB_Transacciones_TB_Producto" FromRole="TB_Producto" ToRole="TB_Transacciones" />
+        </EntityType>
+        <EntityType Name="TB_Transacciones">
+          <Key>
+            <PropertyRef Name="Codigo_Transaccion" />
+          </Key>
+          <Property Name="Codigo_Transaccion" Type="Int32" Nullable="false" />
+          <Property Name="Codigo_Producto" Type="Int32" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Fecha_Transaccion" Type="DateTime" Precision="3" />
+          <Property Name="Tipo_Transaccion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo_Usuario" Type="Int32" />
+          <Property Name="Numero_Identidad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nombre_Completo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TB_Producto" Relationship="Self.FK_TB_Transacciones_TB_Producto" FromRole="TB_Transacciones" ToRole="TB_Producto" />
+          <NavigationProperty Name="TB_Usuario" Relationship="Self.FK_TB_Transacciones_TB_Usuario" FromRole="TB_Transacciones" ToRole="TB_Usuario" />
+        </EntityType>
+        <EntityType Name="TB_Usuario">
+          <Key>
+            <PropertyRef Name="Codigo_Usuario" />
+          </Key>
+          <Property Name="Codigo_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Contraseña" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Numero_Identidad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nombre_Completo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Genero" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Correo_Electronico" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Rol" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TB_Gestiones" Relationship="Self.FK_TB_Gestiones_TB_Usuario" FromRole="TB_Usuario" ToRole="TB_Gestiones" />
+          <NavigationProperty Name="TB_Producto" Relationship="Self.FK_TB_Producto_TB_Usuario" FromRole="TB_Usuario" ToRole="TB_Producto" />
+          <NavigationProperty Name="TB_Transacciones" Relationship="Self.FK_TB_Transacciones_TB_Usuario" FromRole="TB_Usuario" ToRole="TB_Transacciones" />
+        </EntityType>
+        <Association Name="FK_TB_Gestiones_TB_Producto">
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="0..1" />
+          <End Role="TB_Gestiones" Type="Self.TB_Gestiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="Codigo_Producto" />
+            </Principal>
+            <Dependent Role="TB_Gestiones">
+              <PropertyRef Name="Codigo_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Gestiones_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Gestiones" Type="Self.TB_Gestiones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Gestiones">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Producto_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Producto">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Transacciones_TB_Producto">
+          <End Role="TB_Producto" Type="Self.TB_Producto" Multiplicity="0..1" />
+          <End Role="TB_Transacciones" Type="Self.TB_Transacciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Producto">
+              <PropertyRef Name="Codigo_Producto" />
+            </Principal>
+            <Dependent Role="TB_Transacciones">
+              <PropertyRef Name="Codigo_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_Transacciones_TB_Usuario">
+          <End Role="TB_Usuario" Type="Self.TB_Usuario" Multiplicity="0..1" />
+          <End Role="TB_Transacciones" Type="Self.TB_Transacciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_Usuario">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Principal>
+            <Dependent Role="TB_Transacciones">
+              <PropertyRef Name="Codigo_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DB_AgenciaDigitalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_Gestiones" EntityType="Self.TB_Gestiones" />
+          <EntitySet Name="TB_Producto" EntityType="Self.TB_Producto" />
+          <EntitySet Name="TB_Transacciones" EntityType="Self.TB_Transacciones" />
+          <EntitySet Name="TB_Usuario" EntityType="Self.TB_Usuario" />
+          <AssociationSet Name="FK_TB_Gestiones_TB_Producto" Association="Self.FK_TB_Gestiones_TB_Producto">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_Gestiones" EntitySet="TB_Gestiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Gestiones_TB_Usuario" Association="Self.FK_TB_Gestiones_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Gestiones" EntitySet="TB_Gestiones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Producto_TB_Usuario" Association="Self.FK_TB_Producto_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Transacciones_TB_Producto" Association="Self.FK_TB_Transacciones_TB_Producto">
+            <End Role="TB_Producto" EntitySet="TB_Producto" />
+            <End Role="TB_Transacciones" EntitySet="TB_Transacciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_Transacciones_TB_Usuario" Association="Self.FK_TB_Transacciones_TB_Usuario">
+            <End Role="TB_Usuario" EntitySet="TB_Usuario" />
+            <End Role="TB_Transacciones" EntitySet="TB_Transacciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_AgenciaDigitalModelStoreContainer" CdmEntityContainer="DB_AgenciaDigitalEntities">
+          <EntitySetMapping Name="TB_Gestiones">
+            <EntityTypeMapping TypeName="DB_AgenciaDigitalModel.TB_Gestiones">
+              <MappingFragment StoreEntitySet="TB_Gestiones">
+                <ScalarProperty Name="Tipo_Producto" ColumnName="Tipo_Producto" />
+                <ScalarProperty Name="Codigo_Gestion" ColumnName="Codigo_Gestion" />
+                <ScalarProperty Name="Codigo_Usuario" ColumnName="Codigo_Usuario" />
+                <ScalarProperty Name="Codigo_Producto" ColumnName="Codigo_Producto" />
+                <ScalarProperty Name="Tipo_Gestion" ColumnName="Tipo_Gestion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Fecha_Gestion" ColumnName="Fecha_Gestion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Producto">
+            <EntityTypeMapping TypeName="DB_AgenciaDigitalModel.TB_Producto">
+              <MappingFragment StoreEntitySet="TB_Producto">
+                <ScalarProperty Name="Codigo_Producto" ColumnName="Codigo_Producto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Tipo_Producto" ColumnName="Tipo_Producto" />
+                <ScalarProperty Name="Codigo_Usuario" ColumnName="Codigo_Usuario" />
+                <ScalarProperty Name="Monto_Inicial" ColumnName="Monto_Inicial" />
+                <ScalarProperty Name="Depositos" ColumnName="Depositos" />
+                <ScalarProperty Name="Retiros" ColumnName="Retiros" />
+                <ScalarProperty Name="Cuota" ColumnName="Cuota" />
+                <ScalarProperty Name="Fecha_Pago" ColumnName="Fecha_Pago" />
+                <ScalarProperty Name="Monto_Capital" ColumnName="Monto_Capital" />
+                <ScalarProperty Name="Monto_Interes" ColumnName="Monto_Interes" />
+                <ScalarProperty Name="Saldo_Final" ColumnName="Saldo_Final" />
+                <ScalarProperty Name="Plazos" ColumnName="Plazos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Transacciones">
+            <EntityTypeMapping TypeName="DB_AgenciaDigitalModel.TB_Transacciones">
+              <MappingFragment StoreEntitySet="TB_Transacciones">
+                <ScalarProperty Name="Codigo_Transaccion" ColumnName="Codigo_Transaccion" />
+                <ScalarProperty Name="Codigo_Producto" ColumnName="Codigo_Producto" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="Fecha_Transaccion" ColumnName="Fecha_Transaccion" />
+                <ScalarProperty Name="Tipo_Transaccion" ColumnName="Tipo_Transaccion" />
+                <ScalarProperty Name="Codigo_Usuario" ColumnName="Codigo_Usuario" />
+                <ScalarProperty Name="Numero_Identidad" ColumnName="Numero_Identidad" />
+                <ScalarProperty Name="Nombre_Completo" ColumnName="Nombre_Completo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_Usuario">
+            <EntityTypeMapping TypeName="DB_AgenciaDigitalModel.TB_Usuario">
+              <MappingFragment StoreEntitySet="TB_Usuario">
+                <ScalarProperty Name="Codigo_Usuario" ColumnName="Codigo_Usuario" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Numero_Identidad" ColumnName="Numero_Identidad" />
+                <ScalarProperty Name="Nombre_Completo" ColumnName="Nombre_Completo" />
+                <ScalarProperty Name="Genero" ColumnName="Genero" />
+                <ScalarProperty Name="Correo_Electronico" ColumnName="Correo_Electronico" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
